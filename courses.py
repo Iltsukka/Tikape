@@ -92,11 +92,15 @@ def teacher_list():
     for k, v in opettajat:
         d[k].append(v)
     return list(d.items())
-    
+
 # hakee ryhmässä olevat henkilöt (aakkosjärjestyksessä)
 def group_people(group_name):
-    pass
-
+    henkilot = db.execute("SELECT O.nimi, Op.nimi FROM Opettajat O, Opiskelijat Op, Ryhmanjasenet Rj, Ryhmat R WHERE Rj.opettaja_id = O.id AND Rj.opiskelija_id = Op.id AND Rj.ryhma_id = R.id AND R.nimi=?", [group_name]).fetchall()
+    import itertools
+    setti = set(itertools.chain.from_iterable(henkilot))
+    lista = [x for x in setti]
+    lista.sort()
+    return lista
 # hakee ryhmissä saatujen opintopisteiden määrät (aakkosjärjestyksessä)
 def credits_in_groups():
     pass
