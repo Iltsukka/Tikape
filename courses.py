@@ -72,6 +72,7 @@ def credits_by_year(year):
 # hakee kurssin arvosanojen jakauman (järjestyksessä arvosanat 1-5)
 def grade_distribution(course_name):
     arvosanat = db.execute("SELECT Ks.grade FROM Kurssisuoritukset Ks, Kurssit K WHERE Ks.kurssi_id = K.id AND K.nimi=?", [course_name]).fetchall()
+    arvosanat = [x[0] for x in arvosanat]
     return arvosanat
 
 # hakee listan kursseista (nimi, opettajien määrä, suorittajien määrä) (aakkosjärjestyksessä)
