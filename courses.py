@@ -84,8 +84,15 @@ def course_list():
     return kurssit
 # hakee listan opettajista kursseineen (aakkosjärjestyksessä opettajat ja kurssit)
 def teacher_list():
-    pass
+    opettajat = db.execute("SELECT O.nimi, K.nimi FROM Opettajat O, Kurssit K, Kurssinopettajat Ko WHERE Ko.kurssi_id = K.id AND Ko.opettaja_id = O.id ORDER BY O.nimi").fetchall()
+    
+    from collections import defaultdict
+    d = defaultdict(list)
 
+    for k, v in opettajat:
+        d[k].append(v)
+    return list(d.items())
+    
 # hakee ryhmässä olevat henkilöt (aakkosjärjestyksessä)
 def group_people(group_name):
     pass
