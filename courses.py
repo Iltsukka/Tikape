@@ -73,12 +73,15 @@ def credits_by_year(year):
 def grade_distribution(course_name):
     arvosanat = db.execute("SELECT Ks.grade FROM Kurssisuoritukset Ks, Kurssit K WHERE Ks.kurssi_id = K.id AND K.nimi=?", [course_name]).fetchall()
     arvosanat = [x[0] for x in arvosanat]
-    return arvosanat
+    sanakirja = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    for luku in arvosanat:
+        sanakirja[luku] += 1
+    return sanakirja
 
 # hakee listan kursseista (nimi, opettajien määrä, suorittajien määrä) (aakkosjärjestyksessä)
 def course_list():
-    pass
-
+    kurssit = db.execute("SELECT K.nimi, COUNT(DISTINCT Ko.opettaja_id), COUNT(DISTINCT Ks.opiskelija_id) FROM Kurssit K LEFT JOIN Kurssinopettajat Ko ON Ko.kurssi_id = K.id LEFT JOIN Kurssisuoritukset Ks ON Ks.kurssi_id = K.id GROUP BY K.id ORDER BY K.nimi").fetchall()
+    return kurssit
 # hakee listan opettajista kursseineen (aakkosjärjestyksessä opettajat ja kurssit)
 def teacher_list():
     pass
