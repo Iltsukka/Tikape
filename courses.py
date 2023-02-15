@@ -104,7 +104,8 @@ def group_people(group_name):
 # hakee ryhmissä saatujen opintopisteiden määrät (aakkosjärjestyksessä)
 def credits_in_groups():
     pass
-
 # hakee ryhmät, joissa on tietty opettaja ja opiskelija (aakkosjärjestyksessä)
 def common_groups(teacher_name, student_name):
-    pass
+    ryhma = db.execute("SELECT R.nimi FROM Ryhmat R, Ryhmanjasenet Rj, Opettajat O, Opiskelijat Op WHERE Rj.ryhma_id = R.id AND Rj.opettaja_id = O.id AND Rj.opiskelija_id = Op.id AND O.nimi=? AND Op.nimi=?", [teacher_name, student_name]).fetchall()
+    lista = [x[0] for x in ryhma]
+    return lista
